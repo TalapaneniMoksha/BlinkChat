@@ -1,0 +1,190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign-up</title>
+  <style>
+    body {
+      font-family: "Lato", "Arial", sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url("{% static 'images/campus2.png' %}");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+
+    .login {
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+     border: 5px double #fff;
+    }
+
+    h2 {
+      color: whitesmoke;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .inputfield {
+      margin-bottom: 10px;
+      text-align: left;
+    }
+
+    label {
+      margin: 5px 0;
+      display: block;
+      padding: 3px;
+      color: whitesmoke;
+      font-size: 16px;
+      font-weight: bolder;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      /* padding: 10px;
+      border: 2px solid;
+      border-radius: 10px;
+      width: 100%; /* Adjust width to fill container */
+      /* font-size: 16px; */
+      /* text-align: center; Center align the text */
+      /* background: rgba(
+        255,
+        255,
+        255,
+        0.5  */
+      border: 2px solid #fff;
+      padding: 10px 20px;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 18px;
+      background-color: rgb(82, 73, 73);
+      color: aqua;
+      opacity: 70%;
+      box-sizing: border-box;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bolder;
+      /* Adjust opacity for background */
+    }
+
+    ::placeholder {
+      color: #000; /* Adjust color of placeholder text */
+      opacity: 15; /* Set opacity for placeholder text */
+    }
+
+
+    button {
+       /* background-color: #007bff; */
+       background-color: rgb(85, 78, 78);
+       padding: 10px 20px;
+       /* border: none; */
+       border-radius: 10px;
+       /* font-size: 16px; */
+       /* cursor: pointer; */
+       width: 100%;
+       /* padding: 10px; */
+       /* background-color: rgb(14, 13, 13); */
+       color: #d7dce2;
+       border: 2px solid #fff;
+       opacity: 70%;
+       font-size: 18px;
+       cursor: pointer;
+       transition: background-color 0.3s ease;
+       font-weight: bold;
+    }
+
+    button:hover {
+      background-color: whitesmoke;
+      color: rgba(14, 16, 17, 0.658); /* darker shade of blue on hover */
+    }
+
+    a {
+      text-decoration: none;
+      color: #007bff;
+      display: block;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .password-rules {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .password-rules ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .password-rules ul li {
+      margin-bottom: 5px;
+      color:whitesmoke;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  
+<div class="login">
+  <h2>Sign-up</h2>
+  <div class="password-rules">
+    <h5>    <ul>
+      <li>Your password must contain at least 8 characters.</li>
+      <li>Your password must contain at least one uppercase letter.</li>
+      <li>Your password must contain at least one special character.</li>
+    </ul></h5>
+        <hr>
+  </div>
+  <form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    <div class="inputfield">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        placeholder="Username"
+        id="username"
+        name="username"
+        required
+      />
+    </div>
+    <div class="inputfield">
+      <label for="password1">Password</label>
+      <input
+        type="password"
+        placeholder="Password"
+        name="password1"
+        required
+      />
+    </div>
+    <div class="inputfield">
+      <label for="password2">Re-Enter Password</label>
+      <input
+        type="password"
+        placeholder="Re-enter Password"
+        name="password2"
+        required
+      />
+    </div>
+    <br>
+    <button type="submit">Sign-up</button>
+  </form>
+  <br />
+
+  <a href="{% url 'login' %}">Already Have an Account</a>
+</div>
+
+</body>
+</html>

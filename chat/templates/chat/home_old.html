@@ -1,0 +1,38 @@
+{% extends 'chat/main.html' %}
+
+{% block content %}
+
+<style>
+    .home-container
+    {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        
+    }
+
+</style>
+
+
+<div class ="home-container">
+
+
+ <div>
+      {% include 'chat/activity_component.html' %}
+
+ </div>
+
+
+    
+    <div>
+        <h5>{{room_count}} Rooms Available</h5>
+        <a href="{% url 'create-room' %}">Create Room</a>
+
+        {% include 'chat/feed_component.html' %}
+    </div>
+
+    <div>
+          {% include 'chat/topics_component.html' %}
+    </div>
+
+</div>
+{% endblock content %}

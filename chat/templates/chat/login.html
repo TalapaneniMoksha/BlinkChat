@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      /* Reset default margin and padding */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Apply styles to the body */
+      body {
+        font-family: "Lato", "Arial", sans-serif;
+        background-image: url("{% static 'images/campus2.png' %}");
+        /* Correct spacing around URL */
+        background-size: cover;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: bolder;
+      }
+
+      /* Style the login container */
+      .login {
+        padding: 50px; /* Increased padding */
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border: 2px solid #fff;
+      }
+
+      /* Style the login heading */
+      .login h2 {
+        margin-bottom: 20px;
+        color: white;
+        /* font-style: italic; */
+      }
+
+      /* Style the input fields */
+      .inputfeild {
+        margin-bottom: 20px;
+      }
+
+      .inputfeild label {
+        display: block;
+        margin-bottom: 5px;
+        color: black;
+      }
+
+      .inputfeild input {
+        border: 2px solid #fff;
+        padding: 10px 20px;
+        width: 100%;
+        border-radius: 5px;
+        font-size: 18px;
+        background-color: rgb(44, 37, 37);
+        color: aqua;
+        opacity: 70%;
+        box-sizing: border-box;
+        justify-content: center;
+      }
+
+      /* Style the submit button */
+      button[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: rgb(14, 13, 13);
+        color: aqua;
+        border: 2px solid #fff;
+        opacity: 70%;
+
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-weight: bold; /* Added text color */
+      }
+
+      /* button[type="submit"]:hover {
+        background-color: rgb(193, 245, 238);
+        color: #070707;
+      } */
+
+      /* Style the messages */
+      .messages {
+        list-style: none;
+        padding: 0;
+      }
+
+      .messages li {
+        padding: 10px;
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      .messages li.error {
+        color: #ff0000;
+      }
+
+      /* Style the sign-up link */
+      p {
+        margin-top: 20px;
+        color: white;
+        font-size: 18px; /* Increased font size */
+        font-weight: bold;
+        /* font-style: italic; */
+      }
+
+      .Redirect {
+        text-decoration: none;
+        display: inline-block;
+        font-size: 18px; /* Increased font size */
+        font-weight: bold; /* Made it bold */
+        margin-top: 10px;
+        opacity: 70%;
+        box-shadow: 0 0 10px rgb(255, 255, 255);
+        padding: 10px 20px;
+        border: 2px solid #fff;
+        /* border: 3px double black; Double line border */
+        /* border-radius: 5px; */
+        background-color: rgb(14, 13, 13);
+        color: aqua;
+      }
+
+      .Redirect :hover {
+        background-color: rgb(7, 7, 7);
+        color: #ffffff;
+      }
+
+      h4 {
+        font-size: 16px;
+        color: whitesmoke;
+        font-style: italic;
+        text-align: left;
+      }
+    </style>
+
+    <div class="login">
+      <h2>Login</h2>
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="inputfeild">
+          <h4>UserName</h4>
+          <input
+            type="text"
+            placeholder="UserName"
+            id="username"
+            name="username"
+            required
+          />
+        </div>
+        <div class="inputfeild">
+          <h4>Password</h4>
+          <input
+            type="password"
+            placeholder="Password"
+            id="password"
+            name="password"
+            required
+          />
+        </div>
+        <br />
+        <button type="submit">LOGIN</button>
+      </form>
+ 
+
+      <p>Haven't signed up yet ?</p>
+      <br />
+      <a href="{% url 'register' %}" class="Redirect">Sign up</a>
+    </div>
+  </head>
+</html>

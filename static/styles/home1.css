@@ -1,0 +1,152 @@
+/*----------------------------------------------------------------------------*/
+/*                                BASIC CODE                                  */
+/*----------------------------------------------------------------------------*/
+
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html, body {
+    background-color: #fff;
+    color: #555;
+    font-family: 'Lato', 'Arial', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+
+/*-----------------------------------------------------------------------------*/
+/*                            REUSABLE COMPONENTS                              */
+/*-----------------------------------------------------------------------------*/
+
+.row {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+/*---------------HEADING----------------*/
+
+h1 {
+    margin: 0;
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 50px; /* Increase font size */
+    font-weight: bold; /* New font-weight */
+    text-transform: uppercase;
+    position: absolute;
+    top: 20%; /* Adjusted top position */
+    left: 25%; /* Adjusted left position */
+    opacity: 0; /* Initially invisible */
+    transition: opacity 1s ease, transform 2s ease; /* Smooth transition */
+    transform: translate(-50%, -50%) scale(0.5); /* Start small and centered */
+}
+
+/* Apply animations to each line */
+
+.animation-line1 {
+    animation-name: roll-in-out;
+    animation-duration: 5s; /* Duration for one line */
+    animation-fill-mode: forwards;
+    animation-delay: 0s; /* Start immediately */
+}
+
+.animation-line2 {
+    animation-name: roll-in-out;
+    animation-duration: 5s; /* Duration for one line */
+    animation-fill-mode: forwards;
+    animation-delay: 5s; /* Delay for second line */
+}
+
+.animation-line3 {
+    animation-name: roll-in-out;
+    animation-duration: 5s; /* Duration for one line */
+    animation-fill-mode: forwards;
+    animation-delay: 10s; /* Delay for third line */
+}
+
+/* Rolling effect for line 2 */
+@keyframes roll-in-out {
+    0% {
+        opacity: 0; /* Start invisible */
+        transform: translate(-50%, -50%) rotateX(-180deg); /* Reverse rotation */
+    }
+    50% {
+        opacity: 1; /* Fade in */
+        transform: translate(-50%, -50%) rotateX(0deg); /* Straight rotation */
+    }
+    100% {
+        opacity: 0; /* End invisible */
+        transform: translate(-50%, -50%) rotateX(180deg); /* Reverse rotation */
+    }
+}
+
+/* Animation to bring all lines back and stay on screen */
+.animation-back {
+    opacity: 50; /* Make visible */
+    transform: translate(-50%, -50%) scale(1); /* Scale to full size and center */
+}
+
+/*-----------------------------------------------------------------------------*/
+/*                             HEADER COMPONENTS                               */
+/*-----------------------------------------------------------------------------*/
+
+header {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(#000000b3)), url("{% static 'images/campus2.png' %}");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("{% static 'images/campus2.png' %}");
+    /* Other background properties */
+    background-size: cover;     
+    background-position: center; 
+    height: 100vh;               
+    background-attachment: fixed;  
+}
+
+.hero-text-box {              
+    position: absolute;                
+    width: 100%; /* Adjust width */
+    top: 50%;                          
+    left: 50%;                         
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);  
+}
+
+/*---------------NAVIGATION BAR----------------*/
+
+.main-nav {
+    float: right;
+    list-style: none;
+    margin-top: 55px;
+}
+
+.main-nav li {
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.main-nav li a:link, .main-nav li a:visited {
+    padding: 8px 0;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 90%;
+    border-bottom: 2px solid transparent;
+    -webkit-transition: border-bottom 0.2s;
+    transition: border-bottom 0.2s;
+}
+
+.main-nav li a:hover, .main-nav li a:active {
+    border-bottom: 2px solid #e67e22
+}
+
+
+.logo {
+    float: left; 
+    height: auto; 
+    width: 90px;
+    margin-top: 20px;
+    -webkit-animation: rotation 0.4s linear 2;
+    animation: rotation 0.4s linear 2;
+  }
