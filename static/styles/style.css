@@ -88,7 +88,6 @@ html {
       background-color: var(--color-bg);
       min-height: 100vh;
       background-image: url("{% static 'images/campus.jpg'%}");
-
     }
 
     img {
@@ -1231,7 +1230,6 @@ body {
   background-color: var(--color-bg);
   min-height: 100vh;
   background-image: url("{% static 'images/campus.jpg'%}");
-
 }
 
 img {
@@ -1279,6 +1277,7 @@ a {
 .btn--main {
   background-color: var(--color-main);
   color: var(--color-dark);
+  margin-bottom: 10px;
 }
 
 .btn:hover {
@@ -1594,7 +1593,7 @@ a {
   align-items: flex-start;
   flex-direction: row;
 }
-
+/* 
 .layout--3 > .container > div:first-child {
   flex-basis: 100%;
   max-width: 100rem;
@@ -1614,10 +1613,10 @@ a {
 
 .layout--2 > .container > div:last-child {
   flex-basis: 100%;
-}
+} */
 /*========== Layout Box ==========*/
 
-.layout__box {
+/* .layout__box {
   width: 90%;
   max-width: 48rem;
   min-height: 40rem;
@@ -1670,7 +1669,7 @@ a {
   .layout--3 > .container > div:nth-child(2) {
     flex-basis: 100%;
   }
-}
+} */
 
 /*==============================
 =>  Topics
@@ -1817,11 +1816,12 @@ a {
 =>  Room List
 ================================*/
 
-.roomList__header {
+/* .roomList__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2.4rem;
+  background-color: var(--color-dark);
 }
 
 .roomList__header h2 {
@@ -1834,6 +1834,46 @@ a {
 .roomList__header p {
   font-weight: 500;
   color: var(--color-dark-light);
+} */
+
+.roomList__header {
+  padding: 1.5rem;
+  /* background-color: var(--color-dark); */
+  margin-bottom: 2.5rem;
+  /* border: 1px solid #ffffff; */
+  /* box-sizing: border-box; */
+}
+
+.container {
+  max-width: 120rem;
+  width: 90%;
+  margin: auto;
+}
+
+.container {
+  max-width: 1200px; /* Adjust the max-width of the container */
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+.roomList__header h2 {
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--color-light);
+  letter-spacing: 1px;
+  display: flex;
+  gap: 9.5em;
+}
+
+.roomList__header p {
+  display: flex;
+  gap: 9.5em;
+  font-weight: 500;
+  color: var(--color-dark-light);
+}
+
+.roomListbtn--main {
+  display: flex;
+  gap: 9.5em;
 }
 
 /*========== Room List Room ==========*/
@@ -1852,6 +1892,7 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 9.5rem;
 }
 
 .roomListRoom__author {

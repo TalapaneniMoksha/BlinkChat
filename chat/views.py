@@ -10,17 +10,20 @@ from.models import Message, Room, Topic
 from .forms import RoomForm,UserForm
 from django.db.models import Max
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordResetForm
+from .forms import MessageForm
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.db.models import Count
+from django.contrib.auth.models import User
+from .models import Room, Message
+from datetime import datetime
+# from django.contrib.auth.models import UserLogEntry  # Replace this with your actual login tracking model
 
 
 
 
-# rooms = [
-    
-#     {'id':1 , 'name': 'lets learn python!'},
-#     {'id':2 , 'name': 'lets learn java script!'},
-#     {'id':3 , 'name': 'lets learn web development!'},
-# ]
+
 
 def starting_page(request):
     return render(request,'chat/home1.html')
@@ -28,19 +31,6 @@ def second_page(request):
     return render(request,'chat/second.html')
 
 
-# def register(request):
-#     if request.method == 'POST':
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             username = form.cleaned_data.get('username')
-#             raw_password = form.cleaned_data.get('password1')
-#             user = authenticate(username=username, password=raw_password)
-#             login(request, user)
-#             return redirect('home')  # Redirect to home page after registration
-#     else:
-#         form = UserCreationForm()
-#     return render(request, 'chat/register.html', {'form': form})
 
 
 
@@ -55,9 +45,10 @@ def register(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Account created successfully. You are now logged in.')
-                return redirect('login')
+                return redirect('home')
             else:
                 messages.error(request, 'Account creation failed. Please try again.')
+                return redirect('register')  # Redirect back to registration page
     else:
         form = UserCreationForm()
     return render(request, 'chat/register.html', {'form': form})
@@ -102,26 +93,6 @@ def logoutUser(request):
     return redirect('starting_page')
 
 
-# def register(request):
-#     page='register'
-#     return render(request,'chat/register.html')
-
-
-# def home(request):
-#     q=request.GET.get('q') if request.GET.get('q') != None else ''
-    
-#     rooms = Room.objects.filter( 
-#         Q(topic__name__icontains=q)|
-#         Q(name__icontains = q)|
-#         Q(description__icontains = q)
-#         )
-    
-#     topics = Topic.objects.all()
-#     room_count =rooms.count()
-#     room_messages = Message.objects.all()
-    
-#     context = {'rooms':rooms,'topics':topics, 'room_count':room_count,room_messages:'room_messages'}
-#     return render(request,'chat/home.html',context)
 
 
 def home(request):
@@ -150,22 +121,28 @@ def home(request):
     return render(request, 'chat/home.html', context)
 
 
+
+
 def room(request, pk):
+    print(request.FILES, 'this is in the view')
     room = Room.objects.get(id=pk)
-    room_messages=room.message_set.all().order_by('-created')
-    participants =room.participants.all()
-    if request.method =='POST':
-        room_message = Message.objects.create(
-            user=request.user,
-            room=room,
-            body=request.POST.get('body')
-         )
-        room.participants.add(request.user)
-        return redirect('room', pk=room.id)
-        
-    
-    context = {'room': room,'room_messages':room_messages,'participants':participants}
-    return render (request,'chat/room.html',context)
+    room_messages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST, request.FILES)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.user = request.user
+            message.room = room
+            message.save()
+            room.participants.add(request.user)
+            return redirect('room', pk=room.id)
+    else:
+        form = MessageForm()
+
+    context = {'room': room, 'room_messages': room_messages, 'participants': participants, 'form': form}
+    return render(request, 'chat/room.html', context)
 
 
 
@@ -179,27 +156,7 @@ def userProfile(request,pk):
 
 
 
-# @login_required(login_url='login')
-# def createRoom(request):
-#     form = RoomForm()
-#     topics =Topic.objects.all()
-#     if not request.user.is_superuser:
-#         return HttpResponse('You are not allowed here!!')
-    
-#     if request.method == 'POST':
-#         topic_name = request.POST.get('topic')
-#         topic,created = Topic.objects.get_or_create(name=topic_name)
-#         Room.objects.create(
-#             host=request.user,
-#             topic=topic,
-#             name=request.POST.get('name'),
-#             description=request.POST.get('description')
-#         )
-    
-#         return redirect('home')
-        
-#     context ={'form': form, 'topics': topics}
-#     return render(request,'chat/room_form.html',context)
+
 @login_required(login_url='login')
 def createRoom(request):
     form = RoomForm()
@@ -242,13 +199,7 @@ def room_detail(request, room_id):
         user_can_type = False
 
     context = {'room': room, 'user_can_type': user_can_type}
-    return render(request, 'chat/room_detail.html', context)
-
-
-# def send_message(request, room_id):
-#     # Your message sending logic here
-#     return HttpResponse("Message sent successfully")
-
+   
 
 
 @login_required(login_url='login')
@@ -317,21 +268,96 @@ def topicPage(request):
     topics =Topic.objects.filter(name__icontains=q)
     return render(request,'chat/topics.html',{'topics':topics}) 
 
-
+     
 
 @login_required
+def delete_user(request):
+    if request.method == 'POST' and request.user == request.user:
+        request.user.delete()
+        logout(request)
+        return redirect('home')  # Redirect to your desired page after deletion
+    elif request.method == 'POST':
+        return HttpResponseForbidden("You don't have permission to delete this account.")
+    return render(request, 'chat/delete_user.html')
+ 
+def reset_password(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        default_password = 'omsrisairam'  # Set your default password here
+
+        try:
+            user = User.objects.get(username=username)
+            user.set_password(default_password)
+            user.save()
+            messages.success(request, f"Password reset for {username} successful. New password: {default_password}")
+            return redirect('home')  # Redirect to the 'home' page
+        except User.DoesNotExist:
+            messages.error(request, "User does not exist.")
+
+    return render(request, 'chat/reset_password.html')
+
+
+
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Important to maintain the user's session
+            update_session_auth_hash(request, user)  # Important to keep the user logged in
             messages.success(request, 'Your password was successfully updated!')
-            return redirect('user-profile', pk=request.user.pk)  # Redirect to profile with user's pk
+            return redirect('home')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'chat/password.html', {
-        'form': form
-    })
+    return render(request, 'chat/change_password.html', {'form': form})
+
+
+# In your views.py
+
+
+
+def user_statistics(request, user_id):
+    user = User.objects.get(id=user_id)
+    
+    # Last login date and time
+    last_login = user.last_login.strftime("%Y-%m-%d %H:%M:%S") if user.last_login else "Never"
+
+    # Total number of messages sent by the user
+    total_messages_sent = user.message_set.count()
+
+    # Total number of rooms joined by the user
+    total_rooms_joined = user.room_set.count()
+    
+    # total_logins = UserLogEntry.objects.filter(user=user).count()  # Replace UserLogEntry with your actual login tracking model
+    
+    # Total number of rooms created by the user
+    total_rooms_created = Room.objects.filter(host=user).count()
+
+    # Most active rooms (rooms where the user sent the most messages)
+    most_active_rooms = user.room_set.annotate(message_count=Count('message')).order_by('-message_count')[:5]
+
+    context = {
+        'user': user,
+        'last_login': last_login,
+        'total_messages_sent': total_messages_sent,
+        'total_rooms_joined': total_rooms_joined,
+        'total_rooms_created': total_rooms_created,
+        'most_active_rooms': most_active_rooms,
+        # 'total_logins': total_logins,
+    }
+    print(context)
+    return render(request, 'chat/user_statistics.html', context)
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Room
+
+@login_required(login_url='login')
+def unsubscribe_room(request, room_id):
+    room = get_object_or_404(Room, id=room_id)
+    if request.method == 'POST':
+        room.participants.remove(request.user)
+        return redirect('home')  # Redirect to home or any appropriate page after unsubscribing
+    return render(request, 'chat/unsubscribe_room.html', {'room': room})

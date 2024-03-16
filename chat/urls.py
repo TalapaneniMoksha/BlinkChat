@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import unsubscribe_room
+
 
 urlpatterns =[
          path('', views.starting_page, name="starting_page"),
@@ -18,7 +20,14 @@ urlpatterns =[
          path('delete-message/<str:pk>/', views.deleteMessage, name="delete-message"),
          path('update-user/', views.updateUser, name="update-user"),
          path('topics/', views.topicPage, name="topics"),
-         path('change-password/', views.change_password, name='change-password'),
+         path('change_password/', views.change_password, name='change_password'),
+         path('delete_user/', views.delete_user, name="delete_user"),
+         path('reset_password/', views.reset_password, name='reset_password'),
+         path('user-statistics/<int:user_id>/', views.user_statistics, name='user_statistics'),
+        #  path('unsubscribe-room/<int:room_id>/', views.unsubscribe_room, name='unsubscribe-room'),
+
+
+
         #  path('send_message/<int:room_id>/', views.send_message, name='send_message'),
 
          

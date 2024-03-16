@@ -1,0 +1,120 @@
+{% extends 'chat/main.html' %}
+
+{% block content %}
+<main class="delete-item layout">
+  <div class="container">
+    <div class="layout__box">
+      <div class="layout__boxHeader">
+        <div class="layout__boxTitle">
+          <a href="{{ request.META.HTTP_REFERER }}">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <title>arrow-left</title>
+              <path d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z"></path>
+            </svg>
+          </a>
+          <h3>Your Statistics</h3>
+        </div>
+      </div>
+      <div class="layout__body">
+        <form class="form" action="" method="POST">
+          {% csrf_token %}
+          <div class="form__group">
+            <table class="stats-table">
+              <tr>
+                <th>Field</th>
+                <th>Value</th>
+              </tr>
+              <tr>
+                <td>Last Login:</td>
+                <td>{{ last_login }}</td>
+              </tr>
+              <tr>
+                <td>Total Messages Sent:</td>
+                <td>{{ total_messages_sent }}</td>
+              </tr>
+              <tr>
+                <td>Total Rooms Joined:</td>
+                <td>{{ total_rooms_joined }}</td>
+              </tr>
+              <tr>
+                <td>Total Rooms Created:</td>
+                <td>{{ total_rooms_created }}</td>
+              </tr>
+            </table>
+            <h2>Your Most Active Rooms</h2>
+            <ol class="active-rooms">
+              {% for room in most_active_rooms %}
+              <li>{{ room.name }} ( Room ID: {{ room.id }}, {{ room.message_count }} messages)</li>
+              {% endfor %}
+            </ol>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<style>
+  .stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  .stats-table th,
+  .stats-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .stats-table th {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .stats-table tr:nth-child(even) {
+    background-color: #555;
+    color: #fff;
+  }
+
+  .stats-table tr:nth-child(odd) {
+    background-color: #777;
+    color: #fff;
+  }
+
+  .stats-table tr:last-child {
+    background-color: #BBB;
+    color: #000;
+  }
+
+  .stats-table tr:last-child td {
+    font-weight: bold;
+  }
+
+  h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .active-rooms {
+    margin-left: 20px;
+    padding-left: 0;
+  }
+
+  .active-rooms li {
+    margin-bottom: 5px;
+    list-style: none;
+    padding-left: 15px;
+    position: relative;
+  }
+
+  .active-rooms li:before {
+    content: "\2022";
+    position: absolute;
+    left: 0;
+    color: #555;
+  }
+</style>
+{% endblock content %}
