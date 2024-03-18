@@ -17,4 +17,4 @@ class UserForm(ModelForm):
 class MessageForm(ModelForm):  # Define MessageForm
     class Meta:
         model = Message
-        fields = ['body', 'pdf', 'image']
+        fields = ['body', 'pdf', 'image'] 

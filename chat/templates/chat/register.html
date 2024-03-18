@@ -113,7 +113,7 @@
 
     a {
       text-decoration: none;
-      color: #007bff;
+      color: whitesmoke;
       display: block;
       margin-top: 10px;
       font-size: 16px;
@@ -143,9 +143,7 @@
         border-radius: 4px;
       }
       .alert-success {
-        color: #3c763d;
-        background-color: #dff0d8;
-        border-color: #d6e9c6;
+        color: whitesmoke;
       }
     </style>
   
@@ -157,8 +155,7 @@
   <div class="password-rules">
     <h5>    <ul>
       <li>Your password must contain at least 8 characters.</li>
-      <li>Your password must contain at least one uppercase letter.</li>
-      <li>Your password must contain at least one special character.</li>
+
       <li>Your Username should not be part of password.</li>
     </ul></h5>
         <hr>
@@ -194,31 +191,24 @@
       />
     </div>
     <br>
+    {% if messages %}
+    <div class="messages">
+        
+            {% for message in messages %}
+            <div class="alert alert-error">{{message}}</div>
+    
+            {% endfor %}
+      
+    </div>
+    {% endif %}
     <button type="submit">Sign-up</button>
   </form>
   <br />
 
   <a href="{% url 'login' %}">Already Have an Account</a>
 </div>
-{% if messages %}
-<div class="messages">
-    
-        {% for message in messages %}
-        <div class="alert alert-success">{{message}}</div>
 
-        {% endfor %}
-  
-</div>
-{% endif %}
 
 </body>
 
 </html>
-
-
-
-
-
-
-
-

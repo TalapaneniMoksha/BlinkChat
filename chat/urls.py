@@ -24,6 +24,8 @@ urlpatterns =[
          path('delete_user/', views.delete_user, name="delete_user"),
          path('reset_password/', views.reset_password, name='reset_password'),
          path('user-statistics/<int:user_id>/', views.user_statistics, name='user_statistics'),
+        path('admin_inter/',views.admin_inter, name="admin_inter"),
+
         #  path('unsubscribe-room/<int:room_id>/', views.unsubscribe_room, name='unsubscribe-room'),
 
 

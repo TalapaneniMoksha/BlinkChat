@@ -1,11 +1,12 @@
 from django.shortcuts import render , redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse
 from.models import Message, Room, Topic
 from .forms import RoomForm,UserForm
 from django.db.models import Max
@@ -34,24 +35,28 @@ def second_page(request):
 
 
 
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
             username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
+            password1 = form.cleaned_data.get('password1')
+            password2 = form.cleaned_data.get('password2')
+
+            form.save()
+            user = authenticate(username=username, password=password1)
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Account created successfully. You are now logged in.')
                 return redirect('home')
-            else:
-                messages.error(request, 'Account creation failed. Please try again.')
-                return redirect('register')  # Redirect back to registration page
+        else:
+            messages.error(request, 'Account creation failed. Please try again.')
+            return redirect('register')
     else:
         form = UserCreationForm()
     return render(request, 'chat/register.html', {'form': form})
+
 
 
 
@@ -361,3 +366,21 @@ def unsubscribe_room(request, room_id):
         room.participants.remove(request.user)
         return redirect('home')  # Redirect to home or any appropriate page after unsubscribing
     return render(request, 'chat/unsubscribe_room.html', {'room': room})
+
+
+login_required
+def admin_inter(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        try:
+            user = User.objects.get(username=username)
+            user.is_superuser = True
+            user.save()
+            messages.success(request, f"{username} has been promoted to superuser.")
+            return redirect('home')  # Redirect to admin dashboard or any other page
+        except User.DoesNotExist:
+            messages.error(request, f"User with username {username} does not exist.")
+            return redirect('admin_inter')
+
+
+    return render(request,'chat/grant_to_admin.html')
