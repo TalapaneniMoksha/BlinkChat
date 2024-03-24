@@ -138,10 +138,22 @@
         font-style: italic;
         text-align: left;
       }
+
+      .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        color: whitesmoke;
+      }
+      .alert-success {
+        color: whitesmoke;
+      }
     </style>
 
     <div class="login">
-      <h2>Login</h2>
+      <h2>Welcome to Blink Chat</h2>
+      <p>Login</p>
       <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <div class="inputfeild">
@@ -165,12 +177,20 @@
           />
         </div>
         <br />
+        {% if messages %}
+    <div class="messages">
+        
+            {% for message in messages %}
+            <div class="alert alert-error">{{message}}</div>
+    
+            {% endfor %}
+      
+    </div>
+    {% endif %}
         <button type="submit">LOGIN</button>
       </form>
  
-
       <p>Haven't signed up yet ?</p>
-      <br />
       <a href="{% url 'register' %}" class="Redirect">Sign up</a>
     </div>
   </head>

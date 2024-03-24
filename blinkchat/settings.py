@@ -27,6 +27,8 @@ SECRET_KEY = 'django-insecure-yezjogds-(k3y7#yrosq(s2_t0a#@s!vw567^je+dxi#m^s!(6
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['10.2.2.44', 'localhost']
+
 
 
 # Application definition
@@ -80,24 +82,24 @@ WSGI_APPLICATION = 'blinkchat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'project',
-#         'USER': 'root',
-#         'PASSWORD': 'omsrisairam',
-#         'HOST': 'localhost',  # Or your MySQL server's address
-#         'PORT': '3306',       # Or the port your MySQL server is listening on
-#     }
-# }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'project',
+        'USER': 'root',
+        'PASSWORD': 'omsrisairam',
+        'HOST': 'localhost',  # Or your MySQL server's address
+        'PORT': '3306',       # Or the port your MySQL server is listening on
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

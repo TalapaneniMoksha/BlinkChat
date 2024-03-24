@@ -30,6 +30,8 @@ def starting_page(request):
     return render(request,'chat/home1.html')
 def second_page(request):
     return render(request,'chat/second.html')
+def swami(request):
+    return render(request,'chat/swami.html')
 
 
 
@@ -64,27 +66,21 @@ def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
         return redirect ('home')
-    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         print(username,password)
-        # Check if the provided username exists in the database
         try:
             user = User.objects.get(username=username)
             print(user)
         except User.DoesNotExist:
             messages.error(request, 'User does not exist')
             return render(request, 'chat/login.html')
-
-        # Authenticate the user using the provided username and password
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            # If authentication is successful, log in the user
             login(request, user)
             return redirect('home')
         else:
-            # If authentication fails, display an error message
             messages.error(request, 'Invalid credentials. Please try again.')
             return render(request, 'chat/login.html')
     context ={'page':page}
@@ -166,8 +162,6 @@ def userProfile(request,pk):
 def createRoom(request):
     form = RoomForm()
     topics = Topic.objects.all()
-
-    # Check if the user is superuser
     if not request.user.is_superuser:
         return HttpResponse('You are not allowed here!!')
 
@@ -175,16 +169,14 @@ def createRoom(request):
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
 
-        # Check if the room is restricted
-        restricted = request.POST.get('restricted') == 'on'  # Convert checkbox value to boolean
+        restricted = request.POST.get('restricted') == 'on'  # Check if room is restricted
 
-        # Create the room
-        room = Room.objects.create(
+        room = Room.objects.create(   #  room creation
             host=request.user,
             topic=topic,
             name=request.POST.get('name'),
             description=request.POST.get('description'),
-            restricted=restricted  # Set the restricted field based on the checkbox value
+            restricted=restricted  
         )
 
         return redirect('home')
