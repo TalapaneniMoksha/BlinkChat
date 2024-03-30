@@ -83,9 +83,8 @@
   .main-nav li a:active {
     /* border-bottom: 2px solid #e67e22; */
     background-color: #fff;
-    color: #f1f0f0;
+    color: #333;
   }
-
   .logo {
     float: left;
     height: auto;
@@ -104,7 +103,7 @@
     margin: 0;
     padding: 0;
     background-color: #fff;
-    color: whitesmoke
+    color: whitesmoke;
     font-family: "Lato", "Arial", sans-serif;
     font-weight: 300;
     font-size: 20px;
@@ -115,9 +114,8 @@
   /* Centering content */
   .name {
     position: absolute;
-    top: 120px; /* Adjusted top position */
-    left: 120px; /* Adjusted left position */
-    text-align: center;
+    top: 200px; /* Adjusted top position */
+    left: 100px; /* Adjusted left position */
     font-size: larger;
   }
 
@@ -130,7 +128,7 @@
   }
 
   #message {
-    font-size: 20px;
+    font-size: 60px;
     font-style: italic;
     margin-bottom: 20px;
 
@@ -154,9 +152,12 @@
       color: #333;
     }
     .name button[type="onclick"] a {
-      text-decoration: none;
-      color: #ffffff;
-      transition: background-color 0.3s, color 0.3s;
+      color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
     }
   }
 
@@ -171,11 +172,23 @@
       </ul>
     </div>
   </nav>
+
+
+  <nav>
+    <div class="row">
+      <ul class="main-nav">
+        <li>
+          <a href="javascript:void(0);" onclick="displayRandomMessage()">Swami's message for you.</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 </header>
 
+
+
+
 <div class="name">
-  <button onclick="displayRandomMessage()">Swami's message for you.</button>
-  <br>
   <div id="message"></div>
 </div>
 
@@ -282,11 +295,8 @@
   function displayRandomMessage() {
     var randomIndex = Math.floor(Math.random() * messages.length);
     var messageElement = document.getElementById("message");
-    messageElement.textContent = messages[randomIndex];
+    messageElement.innerHTML = "“" + messages[randomIndex] + "”"; // Encapsulating message within curly quotes
     messageElement.style.visibility = "visible";
-    setTimeout(function() {
-      messageElement.style.visibility = "hidden";
-    }, 3000); // Hides the message after 3 seconds
   }
 </script>
 </body>

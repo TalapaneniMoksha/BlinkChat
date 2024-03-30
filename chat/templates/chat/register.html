@@ -121,10 +121,11 @@
 
     
       .alert {
-        padding: 15px;
+        padding: 10px;
         margin-bottom: 20px;
         border: 1px solid transparent;
         border-radius: 4px;
+        color: whitesmoke;
       }
       .alert-success {
         color: whitesmoke;
@@ -177,10 +178,8 @@
     <br>
     {% if messages %}
     <div class="messages">
-        
             {% for message in messages %}
             <div class="alert alert-error">{{message}}</div>
-    
             {% endfor %}
       
     </div>
